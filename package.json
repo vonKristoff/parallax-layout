@@ -1,0 +1,47 @@
+{
+  "name": "test-layout",
+  "version": "0.1.0",
+  "devDependencies": {
+    "babelify": "^5.0.3",
+    "browserify": "^13.0.0",
+    "jade": "latest",
+    "jshint": "^2.8.0",
+    "jshint-stylish": "^0.4.0",
+    "live-server": "^0.8.2",
+    "nib": "latest",
+    "npm-run-all": "^1.2.13",
+    "stringify": "^3.2.1",
+    "stylus": "latest",
+    "uglify-js": "^2.5.0",
+    "watch": "latest",
+    "watchify": "^3.7.0"
+  },
+  "scripts": {
+    "start": "npm-run-all --parallel server:localhost listen:*",
+    "build": "npm-run-all --parallel build:*",
+    "server:localhost": "live-server ./public --port=3000",
+    "listen:scripts": "watchify -t [ stringify --extensions [.html] ] js/main.js -o public/js/bundle.js",
+    "listen:html": "watch 'npm run compile:pages' jade/",
+    "listen:templates": "watch 'npm run compile:templates' jade/components",
+    "listen:stylus": "watch 'npm run compile:css' stylus/",
+    "precompile:js": "jshint --reporter=node_modules/jshint-stylish/stylish js/.; exit 0",
+    "compile:css": "stylus -u nib stylus/style.styl -o public/css/style.css",
+    "compile:pages": "jade --obj '{dev:true}' jade/views -o public/",
+    "compile:templates": "jade jade/components -o js/templates/",
+    "build:css": "stylus -u nib stylus/style.styl -o dist/css/style.css",
+    "build:bundle": "browserify js/main.js -o > dist/js/bundle.js",
+    "build:html": "jade --obj '{dev:false}' jade/views -o dist/"
+  },
+  "dependencies": {
+    "rx-lite": "latest",
+    "vue": "latest",
+    "vue-rx": "^1.0.0",
+    "vue-resource": "latest",
+    "vue-router": "latest"
+  },
+  "browserify": {
+    "transform": [
+      "babelify"
+    ]
+  }
+}
