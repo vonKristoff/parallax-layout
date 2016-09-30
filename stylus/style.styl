@@ -11,39 +11,20 @@ html
 #root
   position relative
 
-.node
-  background white
-  padding 2em
-  margin 1em
-  border 1px solid violet
-  border-radius 1em
-  max-width 300px
-  text-align center
-  position absolute
-  .block
-    pointer-events none
-  .io--in
-    position absolute
-    width 1em
-    height 1em
-    border 1px solid violet
-    border-radius 50%
-    background-color white
-    left -.5em
-    top calc(50% - .5em)
-  .io--out
-    right -.5em
-    top calc(50% - .5em)
-    position absolute
-    width 1em
-    height 1em
-    border 1px solid violet
-    border-radius 50%
-    background-color white
-    .connector
-      position absolute
-      top 0.5em
-      left 0.5em
-      width 200px
-      height 50px
-      border 1px solid yellowgreen
+section
+  height 50vh
+  width 100%
+  transform translate3d(0,0,0)
+  &:nth-child(even)
+    background blue
+  &[role="content"]
+    .layout
+      background violet
+      margin 0 auto
+      width 50%
+      height 100%
+  &[role="splash"]
+    background-position 50% 0%
+    background-size cover
+    background-repeat no-repeat
+  

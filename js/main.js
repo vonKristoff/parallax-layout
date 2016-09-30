@@ -1,24 +1,47 @@
-import Vue from 'vue'; 
-import store from './data/store';
+let bgs = document.querySelectorAll('section'),
+    p = []
+function onScroll() {
 
-const spa = false;
+    let pageTop = window.scrollY,
+        pageBottom = pageTop + window.innerHeight
 
-if(!spa) {
-    import Custom from './components/custom';
-    const app = new Vue({
-        el: '#root',
-        components: [Custom],
-        data: {
-            store
+    bgs.forEach((el, i) => {
+        if(el.hasAttribute('data-src')) {
+            
+            let pos = el.getBoundingClientRect()                
+            p[i].visible = (pos.top < pageBottom && pos.bottom > 0)
+
+            if(p[i].visible) {
+   
+                let heightToScreenRatio = window.innerHeight / el.clientHeight,
+                    relativeToTop = 1 - (pos.bottom / el.clientHeight),
+                    px = relativeToTop * el.clientHeight,
+                    pct = 100 * (px / el.clientHeight) / heightToScreenRatio
+
+                if(el.hasAttribute('data-offset')) pct -= el.getAttribute('data-offset')
+
+                p[i].pct += (pct - p[i].pct) * .97
+                el.style.backgroundPosition = '50% ' + -p[i].pct +'%'      
+            }
         }
     })
-} else {
-    import VueRouter from 'vue-router';
-    import Root from './components/Root';
-    import {routes} from './routes';
-
-    Vue.use(VueRouter);
-    const router = new VueRouter();
-    routes(router);
-    router.start(Root, '#root');
 }
+function init() {
+    bgs.forEach((el, i) => {
+        p[i] = {
+            pct: 0,
+            visible: false
+        }
+        // pcts[i] = 0
+        let src = el.getAttribute('data-src')
+        if(src != null) el.style.backgroundImage = `url(${src})`
+    })
+    cycle()   
+}
+
+function cycle() {
+    onScroll()
+    requestAnimationFrame(cycle)
+}
+
+init()
